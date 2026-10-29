@@ -28,6 +28,7 @@ export type MenuItem = {
   price: number; // in rupees
   veg: boolean;
   bestseller?: boolean;
+  image?: string; // optional photo, e.g. "/gallery/egg-roll.jpg"
 };
 
 export type MenuCategory = {
@@ -92,6 +93,35 @@ export const outlets: Outlet[] = [
   { area: "Jayanagar", address: "Sample address, 4th Block, Jayanagar, Bengaluru 560011", hours: "12 PM – 11 PM" },
   { area: "Whitefield", address: "Sample address, ITPL Main Road, Whitefield, Bengaluru 560066", hours: "12 PM – 11 PM" },
 ];
+
+// "Build your roll" playground. Prices are added up live as people pick.
+export type BuilderOption = {
+  name: string;
+  price: number; // in rupees
+  veg: boolean;
+  colour: string; // colour of this layer in the roll drawing
+};
+
+export const builder = {
+  bases: [
+    { name: "Classic paratha", price: 50, veg: true, colour: "#e9c58a" },
+    { name: "Egg paratha", price: 70, veg: false, colour: "#f4d35e" },
+    { name: "Double egg paratha", price: 90, veg: false, colour: "#f6c343" },
+  ],
+  fillings: [
+    { name: "Chicken tikka", price: 80, veg: false, colour: "#c2552d" },
+    { name: "Mutton seekh", price: 110, veg: false, colour: "#7a3b22" },
+    { name: "Paneer tikka", price: 70, veg: true, colour: "#f1e3c6" },
+    { name: "Aloo masala", price: 30, veg: true, colour: "#d9a441" },
+    { name: "Mushroom pepper", price: 60, veg: true, colour: "#8c6a4f" },
+  ],
+  extras: [
+    { name: "Cheese", price: 30, veg: true, colour: "#ffd166" },
+    { name: "Mint mayo", price: 15, veg: true, colour: "#7cc47f" },
+    { name: "Pickled onions", price: 10, veg: true, colour: "#d16ba5" },
+    { name: "Peri peri", price: 20, veg: true, colour: "#d9452b" },
+  ],
+} satisfies Record<string, BuilderOption[]>;
 
 // Photos and videos for the "From the feed" wall. Put the files in
 // public/gallery/ and list them here, e.g.

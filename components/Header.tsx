@@ -2,6 +2,7 @@ import { brand, instagramUrl } from "@/data/site";
 
 const links = [
   { href: "#menu", label: "Menu" },
+  { href: "#build", label: "Build a roll" },
   { href: "#feed", label: "Feed" },
   { href: "#outlets", label: "Outlets" },
   { href: "#follow", label: "Follow us" },

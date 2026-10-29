@@ -4,6 +4,8 @@ import { useEffect, useRef } from "react";
 import { animate, motion, useInView, useScroll, useTransform } from "motion/react";
 import { brand, outlets } from "@/data/site";
 import Magnetic from "@/components/Magnetic";
+import Embers from "@/components/Embers";
+import { useIntro } from "@/components/Providers";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -15,6 +17,7 @@ export default function Hero() {
   const titleY = useTransform(scrollYProgress, [0, 1], [0, -80]);
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
+  const { ready } = useIntro();
   const [first, ...rest] = brand.name.split(" ");
 
   return (
@@ -28,6 +31,7 @@ export default function Hero() {
         e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
       }}
     >
+      <Embers />
       {/* drifting colour blobs */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="blob absolute -top-32 -left-24 h-96 w-96 rounded-full bg-chili/30 blur-3xl" />
@@ -38,7 +42,7 @@ export default function Hero() {
         <motion.div style={{ y: titleY, opacity: fade }}>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={ready && { opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease }}
             className="mb-5 inline-flex items-center gap-2 rounded-full border border-saffron/30 bg-saffron/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-saffron"
           >
@@ -60,7 +64,7 @@ export default function Hero() {
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={ready && { opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6, ease }}
             className="mt-6 font-display text-2xl font-bold tracking-tight sm:text-3xl"
           >
@@ -68,7 +72,7 @@ export default function Hero() {
           </motion.p>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={ready && { opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7, ease }}
             className="mt-3 max-w-md text-lg text-muted"
           >
@@ -77,7 +81,7 @@ export default function Hero() {
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={ready && { opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8, ease }}
             className="mt-8 flex flex-wrap gap-3"
           >
@@ -103,7 +107,7 @@ export default function Hero() {
         <motion.div
           style={{ y: artY, rotate: artRotate }}
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
+          animate={ready && { opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, delay: 0.2, ease }}
         >
           <RollArt />
@@ -115,6 +119,7 @@ export default function Hero() {
 
 // Each letter springs up from below the baseline, one after another.
 function Letters({ text, delay = 0, className }: { text: string; delay?: number; className?: string }) {
+  const { ready } = useIntro();
   return (
     <span className={`letters inline-flex pb-[0.06em] ${className ?? ""}`}>
       {text.split("").map((ch, i) => (
@@ -122,7 +127,7 @@ function Letters({ text, delay = 0, className }: { text: string; delay?: number;
           key={i}
           className="inline-block"
           initial={{ y: "110%", rotate: 8 }}
-          animate={{ y: "0%", rotate: 0 }}
+          animate={ready && { y: "0%", rotate: 0 }}
           transition={{ duration: 0.9, delay: delay + i * 0.05, ease }}
         >
           {ch === " " ? " " : ch}

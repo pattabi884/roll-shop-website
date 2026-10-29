@@ -14,6 +14,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="grain font-sans antialiased">
+        {/* without JavaScript the intro curtain would never lift */}
+        <noscript>
+          <style>{`.intro{display:none}`}</style>
+        </noscript>
         <Providers>{children}</Providers>
       </body>
     </html>
