@@ -1,6 +1,8 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import Marquee from "@/components/Marquee";
 import Menu from "@/components/Menu";
+import Gallery from "@/components/Gallery";
 import Outlets from "@/components/Outlets";
 import InstagramCta from "@/components/InstagramCta";
 import Footer from "@/components/Footer";
@@ -17,7 +19,9 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <Marquee />
         <Menu />
+        <Gallery />
         <Outlets />
         <InstagramCta />
       </main>
