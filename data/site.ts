@@ -1,0 +1,98 @@
+// ─────────────────────────────────────────────────────────────
+// ALL the shop's content lives in this one file.
+// Change text, prices, outlets or links here — no need to touch
+// the components. Everything below is SAMPLE data until replaced.
+// ─────────────────────────────────────────────────────────────
+
+// While this is true, a small "sample content" strip shows at the
+// top of the site. Set it to false once the real details are in.
+export const isSampleData = true;
+
+export const brand = {
+  name: "Roll Shop", // TODO: real shop name
+  tagline: "Hot off the tawa. Rolled to order.",
+  description:
+    "Flaky parathas, smoky fillings and our house chutneys — rolled fresh across 5 outlets in Bengaluru.",
+  instagramHandle: "rollshop", // TODO: real handle, without the @
+  instagramFollowers: "50K+", // TODO: real number
+  phone: "+91 90000 00000", // TODO
+  email: "hello@rollshop.in", // TODO
+};
+
+export const instagramUrl = `https://instagram.com/${brand.instagramHandle}`;
+
+export type MenuItem = {
+  name: string;
+  description: string;
+  price: number; // in rupees
+  veg: boolean;
+  bestseller?: boolean;
+};
+
+export type MenuCategory = {
+  name: string;
+  items: MenuItem[];
+};
+
+export const menu: MenuCategory[] = [
+  {
+    name: "Classic Rolls",
+    items: [
+      { name: "Egg Roll", description: "Single egg, onions, green chilli, lime, house sauce.", price: 90, veg: false },
+      { name: "Double Egg Roll", description: "Two eggs fried right into the paratha.", price: 110, veg: false, bestseller: true },
+      { name: "Aloo Masala Roll", description: "Spiced potato, pickled onions, mint chutney.", price: 80, veg: true },
+    ],
+  },
+  {
+    name: "Chicken",
+    items: [
+      { name: "Chicken Kathi Roll", description: "Charred chicken tikka, onions, mint mayo.", price: 150, veg: false, bestseller: true },
+      { name: "Egg Chicken Roll", description: "Egg-coated paratha loaded with chicken tikka.", price: 170, veg: false },
+      { name: "Peri Peri Chicken Roll", description: "Fiery peri peri chicken, cheese, crunchy slaw.", price: 180, veg: false },
+    ],
+  },
+  {
+    name: "Paneer & Veg",
+    items: [
+      { name: "Paneer Tikka Roll", description: "Tandoori paneer, capsicum, onions, green chutney.", price: 140, veg: true, bestseller: true },
+      { name: "Mushroom Masala Roll", description: "Pepper-tossed mushrooms with caramelised onions.", price: 130, veg: true },
+      { name: "Cheese Corn Roll", description: "Sweet corn, melted cheese, chilli flakes.", price: 120, veg: true },
+    ],
+  },
+  {
+    name: "Mutton",
+    items: [
+      { name: "Mutton Seekh Roll", description: "Juicy seekh kebab, onions, lime, chilli.", price: 200, veg: false },
+      { name: "Egg Mutton Roll", description: "Double the richness: egg paratha + mutton.", price: 220, veg: false },
+    ],
+  },
+  {
+    name: "Sides & Drinks",
+    items: [
+      { name: "Masala Fries", description: "Crispy fries with our roll masala.", price: 90, veg: true },
+      { name: "Nimbu Soda", description: "Sweet, salted or mixed.", price: 50, veg: true },
+      { name: "Masala Chaas", description: "Cool spiced buttermilk.", price: 50, veg: true },
+    ],
+  },
+];
+
+export type Outlet = {
+  area: string;
+  address: string;
+  hours: string;
+  phone?: string;
+  mapsQuery?: string; // what to search on Google Maps; defaults to the address
+};
+
+export const outlets: Outlet[] = [
+  { area: "Koramangala", address: "Sample address, 5th Block, Koramangala, Bengaluru 560095", hours: "12 PM – 12 AM" },
+  { area: "Indiranagar", address: "Sample address, 100 Feet Road, Indiranagar, Bengaluru 560038", hours: "12 PM – 12 AM" },
+  { area: "HSR Layout", address: "Sample address, Sector 1, HSR Layout, Bengaluru 560102", hours: "12 PM – 11 PM" },
+  { area: "Jayanagar", address: "Sample address, 4th Block, Jayanagar, Bengaluru 560011", hours: "12 PM – 11 PM" },
+  { area: "Whitefield", address: "Sample address, ITPL Main Road, Whitefield, Bengaluru 560066", hours: "12 PM – 11 PM" },
+];
+
+export const orderLinks = {
+  swiggy: "", // TODO: paste Swiggy link (leave empty to hide the button)
+  zomato: "", // TODO: paste Zomato link (leave empty to hide the button)
+};
