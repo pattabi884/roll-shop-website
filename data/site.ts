@@ -1,22 +1,23 @@
 // ─────────────────────────────────────────────────────────────
 // ALL the shop's content lives in this one file.
 // Change text, prices, outlets or links here — no need to touch
-// the components. Everything below is SAMPLE data until replaced.
+// the components. Brand name, Instagram handle and follower count
+// are real; menu, prices and outlets are still SAMPLE data.
 // ─────────────────────────────────────────────────────────────
 
 // While this is true, a small "sample content" strip shows at the
-// top of the site. Set it to false once the real details are in.
+// top of the site. Set it to false once the real menu and outlets are in.
 export const isSampleData = true;
 
 export const brand = {
-  name: "Roll Shop", // TODO: real shop name
+  name: "Tronic Rolls",
   tagline: "Hot off the tawa. Rolled to order.",
   description:
     "Flaky parathas, smoky fillings and our house chutneys — rolled fresh across 5 outlets in Bengaluru.",
-  instagramHandle: "rollshop", // TODO: real handle, without the @
-  instagramFollowers: "50K+", // TODO: real number
-  phone: "+91 90000 00000", // TODO
-  email: "hello@rollshop.in", // TODO
+  instagramHandle: "tronicrolls", // without the @
+  instagramFollowers: "27.8K+",
+  phone: "", // TODO: real number (leave empty to hide)
+  email: "", // TODO: real email (leave empty to hide)
 };
 
 export const instagramUrl = `https://instagram.com/${brand.instagramHandle}`;
@@ -27,6 +28,7 @@ export type MenuItem = {
   price: number; // in rupees
   veg: boolean;
   bestseller?: boolean;
+  image?: string; // optional photo, e.g. "/gallery/egg-roll.jpg"
 };
 
 export type MenuCategory = {
@@ -91,6 +93,49 @@ export const outlets: Outlet[] = [
   { area: "Jayanagar", address: "Sample address, 4th Block, Jayanagar, Bengaluru 560011", hours: "12 PM – 11 PM" },
   { area: "Whitefield", address: "Sample address, ITPL Main Road, Whitefield, Bengaluru 560066", hours: "12 PM – 11 PM" },
 ];
+
+// "Build your roll" playground. Prices are added up live as people pick.
+export type BuilderOption = {
+  name: string;
+  price: number; // in rupees
+  veg: boolean;
+  colour: string; // colour of this layer in the roll drawing
+};
+
+export const builder = {
+  bases: [
+    { name: "Classic paratha", price: 50, veg: true, colour: "#e9c58a" },
+    { name: "Egg paratha", price: 70, veg: false, colour: "#f4d35e" },
+    { name: "Double egg paratha", price: 90, veg: false, colour: "#f6c343" },
+  ],
+  fillings: [
+    { name: "Chicken tikka", price: 80, veg: false, colour: "#c2552d" },
+    { name: "Mutton seekh", price: 110, veg: false, colour: "#7a3b22" },
+    { name: "Paneer tikka", price: 70, veg: true, colour: "#f1e3c6" },
+    { name: "Aloo masala", price: 30, veg: true, colour: "#d9a441" },
+    { name: "Mushroom pepper", price: 60, veg: true, colour: "#8c6a4f" },
+  ],
+  extras: [
+    { name: "Cheese", price: 30, veg: true, colour: "#ffd166" },
+    { name: "Mint mayo", price: 15, veg: true, colour: "#7cc47f" },
+    { name: "Pickled onions", price: 10, veg: true, colour: "#d16ba5" },
+    { name: "Peri peri", price: 20, veg: true, colour: "#d9452b" },
+  ],
+} satisfies Record<string, BuilderOption[]>;
+
+// Photos and videos for the "From the feed" wall. Put the files in
+// public/gallery/ and list them here, e.g.
+//   { src: "/gallery/egg-roll.jpg", alt: "Double egg roll on the tawa", type: "image" },
+//   { src: "/gallery/reel-1.mp4", alt: "Rolling a kathi roll", type: "video", poster: "/gallery/reel-1.jpg" },
+// While this is empty, the wall shows styled placeholder tiles.
+export type GalleryItem = {
+  src: string;
+  alt: string;
+  type: "image" | "video";
+  poster?: string; // still frame shown before a video plays
+};
+
+export const gallery: GalleryItem[] = [];
 
 export const orderLinks = {
   swiggy: "", // TODO: paste Swiggy link (leave empty to hide the button)

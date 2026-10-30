@@ -5,6 +5,8 @@ Marketing website for a roll shop with 5 outlets in Bengaluru: menu, locations a
 ## Edit the content
 Everything (menu, prices, outlets, Instagram handle) is in **`data/site.ts`**.
 
+To add Instagram photos or reels: put the files in `public/gallery/` and list them in `gallery` in `data/site.ts`.
+
 ## Run it locally
 ```bash
 npm install

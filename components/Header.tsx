@@ -2,6 +2,8 @@ import { brand, instagramUrl } from "@/data/site";
 
 const links = [
   { href: "#menu", label: "Menu" },
+  { href: "#build", label: "Build a roll" },
+  { href: "#feed", label: "Feed" },
   { href: "#outlets", label: "Outlets" },
   { href: "#follow", label: "Follow us" },
 ];
@@ -11,7 +13,7 @@ export default function Header() {
     <header className="sticky top-0 z-40 border-b border-cream/10 bg-ink/85 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
         <a href="#top" className="font-display text-xl font-extrabold tracking-tight">
-          {brand.name}
+          <span className="text-saffron">{brand.name.split(" ")[0]}</span> {brand.name.split(" ").slice(1).join(" ")}
           <span className="text-chili">.</span>
         </a>
         <nav className="flex items-center gap-5 text-sm text-muted">

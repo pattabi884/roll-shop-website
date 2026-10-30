@@ -14,7 +14,8 @@ It is an experiment: no backend, no ordering, no login. Static site only.
 ## Where things live
 - `data/site.ts`: ALL content (brand name, tagline, Instagram handle, menu, prices, outlets, order links).
   Change content here, never hard-code it in components.
-- `components/`: one file per section (Header, Hero, Menu, Outlets, InstagramCta, Footer).
+- `components/`: one file per section (Header, Hero, Marquee, Menu, Gallery, Outlets, InstagramCta, Footer),
+  plus motion helpers (Providers, Reveal, Magnetic). Animations use Motion (`motion/react`) and Lenis.
 - `app/globals.css`: colour and font tokens (`ink`, `cream`, `saffron`, `chili`, `leaf`, `muted`).
 
 ## Content rules

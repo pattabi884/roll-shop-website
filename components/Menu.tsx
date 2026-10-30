@@ -1,80 +1,120 @@
 "use client";
 
 import { useState } from "react";
-import { menu, orderLinks } from "@/data/site";
+import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "motion/react";
+import { menu, orderLinks, type MenuItem } from "@/data/site";
+import Reveal from "@/components/Reveal";
+import VegMark from "@/components/VegMark";
 
 export default function Menu() {
   const [active, setActive] = useState(0);
   const category = menu[active];
 
   return (
-    <section id="menu" className="bg-ink-soft py-20">
+    <section id="menu" className="relative bg-ink-soft py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="flex flex-wrap items-end justify-between gap-6">
+        <Reveal className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-saffron">The menu</p>
-            <h2 className="mt-2 font-display text-4xl font-extrabold tracking-tight sm:text-5xl">Pick your roll</h2>
+            <h2 className="mt-2 font-display text-5xl font-extrabold tracking-tight sm:text-7xl">
+              Pick your <span className="text-chili">roll.</span>
+            </h2>
           </div>
           <OrderButtons />
-        </div>
+        </Reveal>
 
-        <div className="mt-8 flex gap-2 overflow-x-auto pb-2" role="tablist">
+        <div className="-mx-4 mt-10 flex gap-2 overflow-x-auto px-4 pb-2 [scrollbar-width:none]" role="tablist">
           {menu.map((c, i) => (
             <button
               key={c.name}
               role="tab"
               aria-selected={i === active}
               onClick={() => setActive(i)}
-              className={`shrink-0 rounded-full px-5 py-2 text-sm font-semibold transition ${
-                i === active ? "bg-saffron text-ink" : "border border-cream/15 text-muted hover:text-cream"
+              className={`relative shrink-0 rounded-full border px-5 py-2 text-sm font-semibold transition-colors ${
+                i === active ? "border-transparent text-ink" : "border-cream/15 text-muted hover:text-cream"
               }`}
             >
-              {c.name}
+              {i === active && (
+                <motion.span
+                  layoutId="menu-pill"
+                  className="absolute inset-0 rounded-full bg-saffron"
+                  transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                />
+              )}
+              <span className="relative">{c.name}</span>
             </button>
           ))}
         </div>
 
-        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {category.items.map((item) => (
-            <li
-              key={item.name}
-              className="group rounded-2xl border border-cream/10 bg-ink p-5 transition hover:-translate-y-1 hover:border-saffron/50"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <VegMark veg={item.veg} />
-                  <h3 className="font-display text-lg font-bold">{item.name}</h3>
-                </div>
-                <span className="font-display text-lg font-bold text-saffron">₹{item.price}</span>
-              </div>
-              <p className="mt-2 text-sm text-muted">{item.description}</p>
-              {item.bestseller && (
-                <span className="mt-3 inline-block rounded-full bg-chili/15 px-3 py-1 text-xs font-semibold text-chili">
-                  Bestseller
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
+        <AnimatePresence mode="wait">
+          <motion.ul
+            key={category.name}
+            className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            initial="hidden"
+            animate="show"
+            exit="hidden"
+            variants={{ show: { transition: { staggerChildren: 0.06 } }, hidden: {} }}
+          >
+            {category.items.map((item) => (
+              <motion.li
+                key={item.name}
+                variants={{
+                  hidden: { opacity: 0, y: 24, scale: 0.97 },
+                  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } },
+                }}
+                style={{ perspective: 800 }}
+              >
+                <MenuCard item={item} />
+              </motion.li>
+            ))}
+          </motion.ul>
+        </AnimatePresence>
       </div>
     </section>
   );
 }
 
-// Indian veg / non-veg indicator: green dot for veg, red triangle for non-veg.
-function VegMark({ veg }: { veg: boolean }) {
+// A card that tilts toward the mouse with a glare following the cursor.
+function MenuCard({ item }: { item: MenuItem }) {
+  const px = useMotionValue(0.5);
+  const py = useMotionValue(0.5);
+  const rotateX = useSpring(useTransform(py, [0, 1], [8, -8]), { stiffness: 250, damping: 20 });
+  const rotateY = useSpring(useTransform(px, [0, 1], [-8, 8]), { stiffness: 250, damping: 20 });
+  const glare = useTransform(
+    [px, py],
+    ([x, y]) => `radial-gradient(240px circle at ${(x as number) * 100}% ${(y as number) * 100}%, rgb(244 165 49 / 0.18), transparent 70%)`,
+  );
+
   return (
-    <span
-      title={veg ? "Veg" : "Non-veg"}
-      className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border-2 ${veg ? "border-leaf" : "border-chili"}`}
+    <motion.div
+      style={{ rotateX, rotateY }}
+      onPointerMove={(e) => {
+        if (e.pointerType !== "mouse") return;
+        const r = e.currentTarget.getBoundingClientRect();
+        px.set((e.clientX - r.left) / r.width);
+        py.set((e.clientY - r.top) / r.height);
+      }}
+      onPointerLeave={() => {
+        px.set(0.5);
+        py.set(0.5);
+      }}
+      className="group relative h-full overflow-hidden rounded-2xl border border-cream/10 bg-ink p-5 transition-colors hover:border-saffron/50"
     >
-      {veg ? (
-        <span className="h-2 w-2 rounded-full bg-leaf" />
-      ) : (
-        <span className="h-0 w-0 border-x-[4px] border-b-[7px] border-x-transparent border-b-chili" />
+      <motion.div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100" style={{ background: glare }} />
+      <div className="relative flex items-start justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <VegMark veg={item.veg} />
+          <h3 className="font-display text-lg font-bold">{item.name}</h3>
+        </div>
+        <span className="font-display text-lg font-bold text-saffron">₹{item.price}</span>
+      </div>
+      <p className="relative mt-2 text-sm text-muted">{item.description}</p>
+      {item.bestseller && (
+        <span className="relative mt-3 inline-block rounded-full bg-chili/15 px-3 py-1 text-xs font-semibold text-chili">
+          🔥 Bestseller
+        </span>
       )}
-      <span className="sr-only">{veg ? "Veg" : "Non-veg"}</span>
-    </span>
+    </motion.div>
   );
 }
 
